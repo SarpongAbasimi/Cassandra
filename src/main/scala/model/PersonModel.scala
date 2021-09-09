@@ -12,13 +12,15 @@ object PersonModel {
     }
     object name extends StringColumn
     object age extends IntColumn
+  }
 
+  abstract class PersonModelQueries extends PersonModel {
     def findById(id: UUID): Future[Option[Person]] = {
-      select.where(_.id eqs id ).one()
+      select.where(_.id eqs id ).consistencyLevel_=(ConsistencyLevel.ONE).one()
     }
 
     def deleteById(id: UUID): Future[Option[Person]] = {
-      select.where(_.id eqs id).one()
+      select.where(_.id eqs id).consistencyLevel_=(ConsistencyLevel.ONE)one()
     }
   }
 }
